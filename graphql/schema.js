@@ -5,7 +5,8 @@ type Recipe {
     name: String,
     description: String,
     createdAt: String,
-    thumbsUp: Int
+    thumbsUp: Int,
+    thumbsDown: Int,
 }
 
 input RecipeInput {
@@ -13,19 +14,15 @@ input RecipeInput {
     description: String
 }
 
-input EditRecipeInput {
-    name: String
-}
-
 type Query {
-    recipes(ID: ID!): Recipe!
-    getRecipes(amount: Int): [Recipe]
+    recipe(ID: ID!): Recipe!
+    getRecipes(limit: Int): [Recipe]
 }
 
 type Mutation {
     createRecipe(recipeInput: RecipeInput): Recipe!
     deleteRecipe(ID: ID!): Boolean
-    editRecipe(ID: ID!, editRecipeInput: EditRecipeInput): Recipe!
+    editRecipe(ID: ID!, recipeInput: RecipeInput): Boolean
 }
 `
 
