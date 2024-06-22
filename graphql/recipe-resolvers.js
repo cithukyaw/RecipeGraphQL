@@ -1,16 +1,17 @@
 import Recipe from "../models/Recipe.js";
 
-export const resolvers = {
+export const recipeResolvers = {
     Query: {
-        async recipe(_, {ID}) {
-            return Recipe.findById(ID);
+        async recipe(_, {id}) {
+            return Recipe.findById(id);
         },
-        async getRecipes(_, {limit}) {
+        async recipes(_, {limit}) {
+            limit = limit || 10;
             return Recipe.find().sort({createdAt: -1}).limit(limit);
         }
     },
     Mutation: {
-        async createRecipe(_, {recipeInput: {name, description}}, context) {
+        async createRecipe(_, {input: {name, description}}, context) {
             const createdRecipe = new Recipe({
                 name,
                 description,
@@ -26,13 +27,13 @@ export const resolvers = {
                 ...res._doc
             }
         },
-        async deleteRecipe(_, {ID}) {
+        async deleteRecipe(_, {id}) {
             // 1 if something was deleted, 0 if nothing was deleted
-            return (await Recipe.deleteOne({_id: ID})).deletedCount;
+            return (await Recipe.deleteOne({_id: id})).deletedCount;
         },
-        async editRecipe(_, {ID, recipeInput: {name, description}}) {
+        async editRecipe(_, {id, input: {name, description}}) {
             // 1 if something was edited, 0 if nothing was edited
-            return (await Recipe.updateOne({_id: ID}, {name, description})).modifiedCount;
+            return (await Recipe.updateOne({_id: id}, {name, description})).modifiedCount;
         }
     }
 }
