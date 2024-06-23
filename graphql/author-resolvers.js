@@ -7,18 +7,13 @@ export const authorResolvers = {
             return Author.findById(id);
         },
         async authors(_, {limit}) {
-            limit = limit || 10;
-            return Author.find().sort({createdAt: -1}).limit(limit);
+            return Author.find().sort({name: 1}).limit(limit);
         }
     },
     Mutation: {
-        async createAuthor(_, {input: {name}}, context) {
-            const createdAuthor = new Author({
-                name
-            });
-
+        async createAuthor(_, { input }, context) {
+            const createdAuthor = new Author(input);
             const res = await createdAuthor.save();
-
             return {
                 id: res.id,
                 ...res._doc
