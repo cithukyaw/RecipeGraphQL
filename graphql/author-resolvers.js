@@ -1,5 +1,6 @@
 import Author from "../models/Author.js";
 import Recipe from "../models/Recipe.js";
+import Review from "../models/Review.js";
 
 export const authorResolvers = {
     Query: {
@@ -10,6 +11,11 @@ export const authorResolvers = {
         // return a list of Authors
         async authors(_, {limit}) {
             return Author.find().sort({name: 1}).limit(limit);
+        }
+    },
+    Author: {
+        async reviews(author) {
+            return Review.find({ authorId: author });
         }
     },
     Mutation: {
