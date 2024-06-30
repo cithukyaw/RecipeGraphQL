@@ -1,4 +1,5 @@
 import Recipe from "../models/Recipe.js";
+import Review from "../models/Review.js";
 
 export const recipeResolvers = {
     Query: {
@@ -10,6 +11,11 @@ export const recipeResolvers = {
         async recipes(_, {limit}) {
             limit = limit || 10;
             return Recipe.find().sort({createdAt: -1}).limit(limit);
+        }
+    },
+    Recipe: {
+        async reviews(recipe) {
+            return Review.find({ recipeId: recipe.id });
         }
     },
     Mutation: {
